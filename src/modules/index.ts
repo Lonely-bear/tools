@@ -1,0 +1,1 @@
+export * as elementInstall from './element-plus'
