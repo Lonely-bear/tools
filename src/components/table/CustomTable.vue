@@ -29,6 +29,31 @@ interface Columns {
     // 组件值处理函数
     formatter?: Function
   }
+  // table-column 组件的 attributes
+  attrs?: {
+    type?: string
+    width?: string | number
+    minWidth?: string | number
+    sortOrders?: ('ascending' | 'descending' | null)[]
+    sortable?: string | boolean
+    resizable?: boolean
+    reserveSelection?: boolean
+    filterMultiple?: boolean
+  }
+  // 搜索输入框attrs
+  inputAttrs?: {
+    style?: any
+    type?: string
+    label?: string
+    id?: string
+    disabled?: boolean
+    clearable?: boolean
+    autocomplete?: string
+    readonly?: boolean
+    showPassword?: boolean
+    showWordLimit?: boolean
+    containerRole?: string
+  }
 }
 interface CustomButton {
   // 按钮文字
@@ -125,12 +150,15 @@ interface TableOptions {
       selectOnIndeterminate?: boolean
       indent?: number
       flexible?: boolean
+      height?: string | number
     }
   }
   // 字段主体
   column?: {
     // 操作栏按钮组
     buttonGroup?: CustomButton[]
+    // 操作栏宽度
+    buttonWidth?: string | number
     // table-column 组件的 attributes
     attrs?: {
       type?: string
@@ -168,8 +196,8 @@ const emit = defineEmits(['onSearch', 'onExport', 'onPageChange'])
 /**
  * 处理表格字段
  */
-const columns = reactive<Array<Columns>>([])
-  ; (function () {
+const columns = reactive<Columns[]>([]);
+(function () {
   if (props.tableData.length) {
     const columnName: string[] = Object.keys(props.tableData[0])
     columnName.forEach((item) => {
@@ -238,28 +266,20 @@ function onExport() {
 
 <template>
   <section v-if="props.tableOptions?.search?.visible || props.tableOptions?.topTools?.visible">
-    <SearchVue
-      v-if="props.tableOptions?.search?.visible ?? false" :tags="props.tableOptions?.search?.tags"
-      :columns="columns" :filters="props.tableOptions?.search?.filters" @on-search="handleSearch"
-    />
+    <SearchVue v-if="props.tableOptions?.search?.visible ?? false" :tags="props.tableOptions?.search?.tags"
+      :columns="columns" :filters="props.tableOptions?.search?.filters" @on-search="handleSearch" />
     <br v-if="props.tableOptions?.search?.visible && props.tableOptions?.topTools?.visible">
-    <OperationVue
-      v-if="props.tableOptions?.topTools?.visible ?? false" :tools="props.tableOptions.topTools?.tools"
+    <OperationVue v-if="props.tableOptions?.topTools?.visible ?? false" :tools="props.tableOptions.topTools?.tools"
       :button-group="props.tableOptions?.topTools?.buttonGroup" @on-add-one="onAddOne" @on-delete-all="onDeleteAll"
-      @on-export="onExport"
-    />
+      @on-export="onExport" />
     <el-divider />
   </section>
   <section>
-    <el-table
-      :data="props.tableData" height="585px" v-bind="props.tableOptions?.table?.attrs"
-      @selection-change="onSelectionChange"
-    >
+    <el-table :data="props.tableData" height="585px" v-bind="props.tableOptions?.table?.attrs"
+      @selection-change="onSelectionChange">
       <el-table-column v-if="props.tableOptions?.table?.checkBox ?? false" type="selection" width="55" />
-      <el-table-column
-        v-for="(item, index) in columns" :key="index" align="left" :formatter="cellFormatter"
-        :prop="item.prop" v-bind="props.tableOptions?.column?.attrs"
-      >
+      <el-table-column v-for="(item, index) in columns" :key="index" align="left" :formatter="cellFormatter"
+        :prop="item.prop" v-bind="item.attrs ?? props.tableOptions?.column?.attrs">
         <template #header>
           {{ item.label }}
           <el-tooltip v-if="item.description !== ''" effect="dark" :content="item.description" placement="bottom">
@@ -280,22 +300,19 @@ function onExport() {
           {{ typeof scope.row[item.prop] === 'object' ? scope.row[item.prop].toString() : scope.row[item.prop] }}
         </template>
       </el-table-column>
-      <el-table-column v-if="props.tableOptions?.column?.buttonGroup" label="操作" align="center" min-width="max-content">
+      <el-table-column v-if="props.tableOptions?.column?.buttonGroup" label="操作" align="center" min-width="max-content"
+        :width="props.tableOptions.column.buttonWidth">
         <template #default="scope">
-          <el-button
-            v-for="(button, index) in props.tableOptions?.column?.buttonGroup" :key="index" v-bind="button.attrs"
-            @click="button.onClick && button.onClick(scope.row as Columns)"
-          >
+          <el-button v-for="(button, index) in props.tableOptions?.column?.buttonGroup" :key="index" v-bind="button.attrs"
+            @click="button.onClick && button.onClick(scope.row as Columns)">
             {{ button.text ?? 'Click Me' }}
           </el-button>
         </template>
       </el-table-column>
     </el-table>
     <el-divider />
-    <PaginationVue
-      v-if="props.tableOptions?.pagination?.visible ?? false" :total="props.tableData.length"
-      :attrs="props.tableOptions?.pagination?.attrs" @on-page-change="onPageChange"
-    />
+    <PaginationVue v-if="props.tableOptions?.pagination?.visible ?? false" :total="props.tableData.length"
+      :attrs="props.tableOptions?.pagination?.attrs" @on-page-change="onPageChange" />
   </section>
 </template>
 
@@ -306,5 +323,4 @@ section {
   padding: 0 10px;
   padding-bottom: 10px;
   box-sizing: border-box;
-}
-</style>
+}</style>

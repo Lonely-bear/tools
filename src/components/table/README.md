@@ -39,6 +39,40 @@ interface Columns {
   typeList?: any[]
   // 搜索字段对应的值
   value?: any
+  // 渲染方法
+  render?: {
+    // 组件名
+    componentName?: string
+    // 组件属性
+    componentAttrs?: any
+    // 组件值处理函数
+    formatter?: Function
+  }
+  // table-column 组件的 attributes
+  attrs?: {
+    type?: string
+    width?: string | number
+    minWidth?: string | number
+    sortOrders?: ('ascending' | 'descending' | null)[]
+    sortable?: string | boolean
+    resizable?: boolean
+    reserveSelection?: boolean
+    filterMultiple?: boolean
+  }
+  // 搜索输入框attrs
+  inputAttrs?: {
+    type?: string
+    label?: string
+    id?: string
+    disabled?: boolean
+    clearable?: boolean
+    autocomplete?: string
+    readonly?: boolean
+    showPassword?: boolean
+    showWordLimit?: boolean
+    containerRole?: string
+    style?: any
+  }
 }
 ```
 
@@ -113,7 +147,7 @@ interface Columns {
   // 字段描述，会在表头后加一个疑问icon展示描述
   description?: string
   // 数据类型，影响到搜索框的类型，后续还会补充
-  dataType?: "string" | "options" | "boolean" | "time" | "date" | "radio"
+  dataType?: 'string' | 'options' | 'boolean' | 'time' | 'date' | 'radio'
   // 特殊数据类型的值表，例如 options 的数组
   typeList?: any[]
   // 搜索字段对应的值
@@ -121,11 +155,22 @@ interface Columns {
   // 渲染方法
   render?: {
     // 组件名
-    componentName?: string,
+    componentName?: string
     // 组件属性
     componentAttrs?: any
     // 组件值处理函数
     formatter?: Function
+  }
+  // table-column 组件的 attributes
+  attrs?: {
+    type?: string
+    width?: string | number
+    minWidth?: string | number
+    sortOrders?: ('ascending' | 'descending' | null)[]
+    sortable?: string | boolean
+    resizable?: boolean
+    reserveSelection?: boolean
+    filterMultiple?: boolean
   }
 }
 
@@ -226,6 +271,7 @@ interface TableOptions {
       selectOnIndeterminate?: boolean
       indent?: number
       flexible?: boolean
+      height?: string | number
     }
   }
   // 字段主体

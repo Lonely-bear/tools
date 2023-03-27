@@ -20,6 +20,31 @@ interface Columns {
     // 组件值处理函数
     formatter?: Function
   }
+  // table-column 组件的 attributes
+  attrs?: {
+    type?: string
+    width?: string | number
+    minWidth?: string | number
+    sortOrders?: ('ascending' | 'descending' | null)[]
+    sortable?: string | boolean
+    resizable?: boolean
+    reserveSelection?: boolean
+    filterMultiple?: boolean
+  }
+  // 搜索输入框attrs
+  inputAttrs?: {
+    type?: string
+    label?: string
+    id?: string
+    disabled?: boolean
+    clearable?: boolean
+    autocomplete?: string
+    readonly?: boolean
+    showPassword?: boolean
+    showWordLimit?: boolean
+    containerRole?: string
+    style?: any
+  }
 }
 
 interface CustomButton {
@@ -30,14 +55,22 @@ interface CustomButton {
   // button 组件的 attributes
   attrs?: {
     icon?: string
-    type?: '' | 'default' | 'success' | 'warning' | 'info' | 'text' | 'primary' | 'danger'
+    type?:
+      | ""
+      | "default"
+      | "success"
+      | "warning"
+      | "info"
+      | "text"
+      | "primary"
+      | "danger"
     link?: boolean
     dark?: boolean
     disabled?: boolean
     text?: boolean
     round?: boolean
     circle?: boolean
-    nativeType?: 'button' | 'reset' | 'submit'
+    nativeType?: "button" | "reset" | "submit"
     loading?: boolean
     plain?: boolean
     bg?: boolean
@@ -97,21 +130,21 @@ interface TableOptions {
     checkBox?: boolean
     // table 组件的 attributes
     attrs?: {
-      style?: import('vue').CSSProperties
+      style?: import("vue").CSSProperties
       className?: string
       border?: boolean
-      tableLayout?: 'auto' | 'fixed'
+      tableLayout?: "auto" | "fixed"
       data?: any[]
       fit?: boolean
       lazy?: boolean
       scrollbarAlwaysOn?: boolean
       stripe?: boolean
       treeProps?:
-      | {
-        hasChildren?: string | undefined
-        children?: string | undefined
-      }
-      | undefined
+        | {
+            hasChildren?: string | undefined
+            children?: string | undefined
+          }
+        | undefined
       showHeader?: boolean
       showSummary?: boolean
       highlightCurrentRow?: boolean
@@ -119,18 +152,21 @@ interface TableOptions {
       selectOnIndeterminate?: boolean
       indent?: number
       flexible?: boolean
+      height?: string | number
     }
   }
   // 字段主体
   column?: {
     // 操作栏按钮组
     buttonGroup?: CustomButton[]
+    // 操作栏宽度
+    buttonWidth?: string | number
     // table-column 组件的 attributes
     attrs?: {
       type?: string
       width?: string | number
       minWidth?: string | number
-      sortOrders?: ('ascending' | 'descending' | null)[]
+      sortOrders?: ("ascending" | "descending" | null)[]
       sortable?: string | boolean
       resizable?: boolean
       reserveSelection?: boolean
