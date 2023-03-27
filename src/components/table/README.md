@@ -1,9 +1,4 @@
 # CustomTable(自定义表)
-## 设计
-* 配置化：表格根据配置文件自动生成
-* 个性化：可通过添加class名为其添加自定义样式
-* 规范化：配置继承于el-table类型
-* 组件化：易复用，易迁移，开箱即用
 ## 结构
 * Header
 * |__ 搜索栏
@@ -123,6 +118,15 @@ interface Columns {
   typeList?: any[]
   // 搜索字段对应的值
   value?: any
+  // 渲染方法
+  render?: {
+    // 组件名
+    componentName?: string,
+    // 组件属性
+    componentAttrs?: any
+    // 组件值处理函数
+    formatter?: Function
+  }
 }
 
 interface CustomButton {

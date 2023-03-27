@@ -6,11 +6,20 @@ interface Columns {
   // 字段描述，会在表头后加一个疑问icon展示描述
   description?: string
   // 数据类型，影响到搜索框的类型，后续还会补充
-  dataType?: "string" | "options" | "boolean" | "time" | "date" | "radio"
+  dataType?: 'string' | 'options' | 'boolean' | 'time' | 'date' | 'radio'
   // 特殊数据类型的值表，例如 options 的数组
   typeList?: any[]
   // 搜索字段对应的值
   value?: any
+  // 渲染方法
+  render?: {
+    // 组件名
+    componentName?: string
+    // 组件属性
+    componentAttrs?: any
+    // 组件值处理函数
+    formatter?: Function
+  }
 }
 
 interface CustomButton {
@@ -21,14 +30,14 @@ interface CustomButton {
   // button 组件的 attributes
   attrs?: {
     icon?: string
-    type?: "" | "default" | "success" | "warning" | "info" | "text" | "primary" | "danger"
+    type?: '' | 'default' | 'success' | 'warning' | 'info' | 'text' | 'primary' | 'danger'
     link?: boolean
     dark?: boolean
     disabled?: boolean
     text?: boolean
     round?: boolean
     circle?: boolean
-    nativeType?: "button" | "reset" | "submit"
+    nativeType?: 'button' | 'reset' | 'submit'
     loading?: boolean
     plain?: boolean
     bg?: boolean
@@ -88,10 +97,10 @@ interface TableOptions {
     checkBox?: boolean
     // table 组件的 attributes
     attrs?: {
-      style?: import("vue").CSSProperties
+      style?: import('vue').CSSProperties
       className?: string
       border?: boolean
-      tableLayout?: "auto" | "fixed"
+      tableLayout?: 'auto' | 'fixed'
       data?: any[]
       fit?: boolean
       lazy?: boolean
@@ -121,7 +130,7 @@ interface TableOptions {
       type?: string
       width?: string | number
       minWidth?: string | number
-      sortOrders?: ("ascending" | "descending" | null)[]
+      sortOrders?: ('ascending' | 'descending' | null)[]
       sortable?: string | boolean
       resizable?: boolean
       reserveSelection?: boolean
